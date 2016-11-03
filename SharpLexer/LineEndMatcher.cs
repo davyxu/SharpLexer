@@ -16,7 +16,7 @@ namespace SharpLexer
             int count = 0;
             while( true )
             {
-                var c = tz.Peek(count);
+                var c = tz.Peek(0);
 
                 if (c == '\n')
                 {

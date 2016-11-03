@@ -5,8 +5,9 @@ using System.IO;
 namespace UnitTest
 {
     enum TokenType
-    {        
-        Unknown = 0,
+    {   
+        EOF = 0,
+        Unknown,
         Numeral,
         String,
 
