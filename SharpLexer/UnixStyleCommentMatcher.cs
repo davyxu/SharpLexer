@@ -4,15 +4,17 @@ namespace SharpLexer
 {    
     public class UnixStyleCommentMatcher : Matcher
     {
-        public UnixStyleCommentMatcher(int id)
+        public UnixStyleCommentMatcher(object id)
         {
-            _id = id;
+            _id = (int)id;
         }
 
         public override Token Match(Tokenizer tz)
         {
             if (tz.Current != '#' )
                 return null;
+
+            var pos = tz.Pos;
 
             tz.Consume(1);
 
@@ -26,7 +28,7 @@ namespace SharpLexer
 
 
 
-            return new Token(this, tz.Source.Substring(beginIndex, tz.Index - beginIndex));
+            return new Token(pos, this, tz.Source.Substring(beginIndex, tz.Index - beginIndex));
         }
     }
 }

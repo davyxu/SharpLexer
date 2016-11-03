@@ -5,15 +5,17 @@ namespace SharpLexer
     {
         StringBuilder _builder = new StringBuilder();
 
-        public StringMatcher(int id )            
+        public StringMatcher(object id )            
         {
-            _id = id;
+            _id = (int)id;
         }
 
         public override Token Match(Tokenizer tz)
         {
             if (tz.Current != '"' && tz.Current != '\'')
                 return null;
+
+            var pos = tz.Pos;
 
             tz.Consume(1);
 
@@ -71,7 +73,7 @@ namespace SharpLexer
 
             tz.Consume();
 
-            return new Token(this, _builder.ToString());
+            return new Token(pos, this, _builder.ToString());
         }
 
     }

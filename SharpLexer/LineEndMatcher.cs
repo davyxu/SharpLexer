@@ -4,22 +4,33 @@ namespace SharpLexer
 {
     public class LineEndMatcher : Matcher
     {        
-        public LineEndMatcher(int id)
+        public LineEndMatcher(object id)
         {
-            _id = id;
+            _id = (int)id;
         }
 
         public override Token Match(Tokenizer tz)
         {
+            TokenPos pos = TokenPos.Invalid;
 
             int count = 0;
-            for (; ; count++)
+            while( true )
             {
                 var c = tz.Peek(count);
 
                 if (c == '\n')
                 {
+                    if ( pos.Equals(TokenPos.Invalid ) )
+                    {
+                        pos = tz.Pos;
+                    }
+
+                    tz.Consume();
+                    
                     tz.IncLine();
+                    count++;
+
+                    continue;
                 }
                 else if ( c == '\r')
                 {
@@ -30,15 +41,13 @@ namespace SharpLexer
                     break;
                 }
 
-                
+                tz.Consume();
             }
 
             if (count == 0)
                 return null;
 
-            tz.Consume(count);
-
-            return new Token(this, string.Empty);
+            return new Token( pos, this, string.Empty);
         }
     }
 }

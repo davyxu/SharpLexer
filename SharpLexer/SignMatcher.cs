@@ -6,9 +6,9 @@ namespace SharpLexer
     {
         string _word;        
 
-        public SignMatcher( int id, string word)            
+        public SignMatcher( object id, string word)            
         {
-            _id = id;
+            _id = (int)id;
             _word = word;
         }
 
@@ -16,6 +16,8 @@ namespace SharpLexer
         {
             if (tz.CharLeft < _word.Length)
                 return null;
+
+            var pos = tz.Pos;
 
             int index = 0;
 
@@ -31,7 +33,7 @@ namespace SharpLexer
             tz.Consume(_word.Length);
 
 
-            return new Token(this, _word );
+            return new Token(pos, this, _word);
         }
 
     }

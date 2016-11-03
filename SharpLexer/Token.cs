@@ -1,16 +1,33 @@
 ﻿
 namespace SharpLexer
 {
+    public struct TokenPos
+    {
+        public int Line;
+        public int Col;
+
+        public static TokenPos Init = new TokenPos() { Line = 1, Col = 1 };
+        public static TokenPos Invalid = new TokenPos(){ Line = -1, Col = -1};
+
+
+
+        public override string ToString()
+        {
+            return string.Format("{0}:{1}", Line, Col);
+        }
+    }
 
     public class Token
     {
         string _value;
-        Matcher _matcher;
+        Matcher _matcher;        
+        TokenPos _pos;
 
-        public Token(Matcher matcher, string value)
+        public Token(TokenPos pos, Matcher matcher, string value)
         {
             _matcher = matcher;
             _value = value;
+            _pos = pos;
         }
 
         public int MatcherID
@@ -30,6 +47,12 @@ namespace SharpLexer
             get { return _value;  }
         }
 
+        public TokenPos Pos
+        {
+            get { return _pos; }
+        }
+        
+
         public float ToNumber()
         {
             return float.Parse(_value);
@@ -42,7 +65,7 @@ namespace SharpLexer
                 return "EOF";
             }
 
-            return _matcher.GetType().Name + " " + Value;
+            return string.Format("{0} {1} {2}", _pos, _matcher.GetType().Name, Value);            
         }
     }
 

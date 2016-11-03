@@ -1,5 +1,6 @@
 ﻿using SharpLexer;
 using System;
+using System.IO;
 
 namespace UnitTest
 {
@@ -26,19 +27,19 @@ namespace UnitTest
         {
             var l = new Lexer();
 
-            l.AddMatcher(new NumeralMatcher((int)TokenType.Numeral));
-            l.AddMatcher(new StringMatcher((int)TokenType.String));
+            l.AddMatcher(new NumeralMatcher(TokenType.Numeral));
+            l.AddMatcher(new StringMatcher(TokenType.String));
 
-            l.AddMatcher(new WhitespaceMatcher((int)TokenType.Whitespace).Ignore());
-            l.AddMatcher(new LineEndMatcher((int)TokenType.LineEnd).Ignore());
-            l.AddMatcher(new UnixStyleCommentMatcher((int)TokenType.Comment).Ignore());
+            l.AddMatcher(new WhitespaceMatcher(TokenType.Whitespace).Ignore());
+            l.AddMatcher(new LineEndMatcher(TokenType.LineEnd).Ignore());
+            l.AddMatcher(new UnixStyleCommentMatcher(TokenType.Comment).Ignore());
 
-            l.AddMatcher(new SignMatcher((int)TokenType.Semicolon, ";"));
-            l.AddMatcher(new SignMatcher((int)TokenType.Go, "go"));
+            l.AddMatcher(new SignMatcher(TokenType.Semicolon, ";"));
+            l.AddMatcher(new SignMatcher(TokenType.Go, "go"));
 
-            l.AddMatcher(new IdentifierMatcher((int)TokenType.Identifier));
+            l.AddMatcher(new IdentifierMatcher(TokenType.Identifier));
 
-            l.AddMatcher(new UnknownMatcher((int)TokenType.Unknown));
+            l.AddMatcher(new UnknownMatcher(TokenType.Unknown));
             l.Start(" \"a\"" + @"
 	            123.3;
 	            go
@@ -46,6 +47,8 @@ namespace UnitTest
 	            ;
 	            'b'
             ");
+
+            //l.Start(File.ReadAllText("a.txt"));
 
             while( true )
             {

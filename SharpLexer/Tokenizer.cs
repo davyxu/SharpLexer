@@ -7,6 +7,7 @@ namespace SharpLexer
        
         public Tokenizer(string src)
         {
+            Pos = TokenPos.Init;
             _source = src;
         }
 
@@ -16,6 +17,8 @@ namespace SharpLexer
         }
 
         public int Index { get; set; }
+
+        public TokenPos Pos { get; set;}        
 
         public string Source { get { return _source; } }
 
@@ -42,12 +45,15 @@ namespace SharpLexer
             return _source[Index + offset ];
         }
 
-        public int Line { get; set; }
+       
 
 
         public void Consume( int count = 1 )
         {
-            Index+= count ;
+            Index += count ;
+            var p = Pos;
+            p.Col += count;
+            Pos = p;            
         }
 
         public bool EOF(int offset = 0)
@@ -57,7 +63,10 @@ namespace SharpLexer
 
         public void IncLine( )
         {
-            Line++;
+            var p = Pos;            
+            p.Line++;
+            p.Col = 1;
+            Pos = p;
         }
     }
 }

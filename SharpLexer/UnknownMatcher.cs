@@ -2,16 +2,18 @@
 {
     public class UnknownMatcher : Matcher
     {
-        public UnknownMatcher(int id)
+        public UnknownMatcher(object id)
         {
-            _id = id;
+            _id = (int)id;
         }
 
         public override Token Match(Tokenizer tz)
         {
+            var pos = tz.Pos;
+
             int beginIndex = tz.Index;
             tz.Consume();
-            return new Token(this, tz.Source.Substring( beginIndex, 1) );
+            return new Token(pos, this, tz.Source.Substring( beginIndex, 1) );
         }
     }
 }

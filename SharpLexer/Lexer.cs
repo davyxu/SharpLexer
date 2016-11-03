@@ -7,7 +7,7 @@ namespace SharpLexer
         IList<Matcher> _tokenmatcher = new List<Matcher>();
         IEnumerator<Token> _tokeniter;
         int _index;
-        int _line = 1;
+        TokenPos _pos = TokenPos.Init;
 
         public void AddMatcher(Matcher matcher)
         {
@@ -17,7 +17,7 @@ namespace SharpLexer
         public override string ToString()
         {
             if (_tokeniter != null)
-                return string.Format("{0} @line {1}",Peek().ToString(), _line);
+                return string.Format("{0} @line {1}",Peek().ToString(), _pos.Line);
 
             return base.ToString();
         }
@@ -32,7 +32,7 @@ namespace SharpLexer
                 foreach (var matcher in _tokenmatcher)
                 {
                     var token = matcher.Match(tz);
-                    _line = tz.Line;
+                    _pos = tz.Pos;
 
                     if (token == null)
                     {
@@ -52,7 +52,7 @@ namespace SharpLexer
             }
 
 
-            yield return new Token(null, string.Empty );
+            yield return new Token(TokenPos.Init, null, string.Empty);
         }
 
         public void Start( string src )

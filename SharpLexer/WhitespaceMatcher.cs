@@ -4,27 +4,36 @@ namespace SharpLexer
 {
     public class WhitespaceMatcher : Matcher
     {        
-        bool IsWhiteSpace( char c )
+
+
+        public WhitespaceMatcher(object id)
         {
-            return c == ' ' || c == '\t';
+            _id = (int)id;
         }
 
-        public WhitespaceMatcher(int id)
+        static bool IsWhiteSpace(char c)
         {
-            _id = id;
+            return c == ' ' || c == '\t';
         }
 
 
         public override Token Match(Tokenizer tz)
         {
-            
+            TokenPos pos = TokenPos.Invalid;
+
             int count = 0;
             for (; ; count++)
             {
                 var c = tz.Peek(count);
 
                 if (!IsWhiteSpace(c))
-                    break;                
+                    break;
+
+                if ( pos.Equals(TokenPos.Invalid ) )
+                {
+                    pos = tz.Pos;
+                }
+                
             }
 
             if (count == 0)
@@ -32,7 +41,7 @@ namespace SharpLexer
 
             tz.Consume( count );
 
-            return new Token(this, string.Empty);
+            return new Token(pos, this, string.Empty);
         }
     }
 }

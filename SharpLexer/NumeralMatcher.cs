@@ -4,9 +4,9 @@ namespace SharpLexer
 {
     public class NumeralMatcher : Matcher
     {
-        public NumeralMatcher(int id)
+        public NumeralMatcher(object id)
         {
-            _id = id;
+            _id = (int)id;
         }
 
         public override Token Match(Tokenizer tz)
@@ -14,6 +14,8 @@ namespace SharpLexer
 
             if (!Char.IsDigit(tz.Current) && tz.Current != '-' )
                 return null;
+
+            var pos = tz.Pos;
 
             int beginIndex = tz.Index;
 
@@ -25,7 +27,7 @@ namespace SharpLexer
             } while (char.IsDigit(tz.Current) || tz.Current == '.');
 
 
-            return new Token(this, tz.Source.Substring( beginIndex, tz.Index - beginIndex) );
+            return new Token(pos, this, tz.Source.Substring(beginIndex, tz.Index - beginIndex));
         }
 
     }

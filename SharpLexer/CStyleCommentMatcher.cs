@@ -4,9 +4,9 @@ namespace SharpLexer
 {
     public class CStyleCommentMatcher : Matcher
     {
-        public CStyleCommentMatcher(int id)
+        public CStyleCommentMatcher(object id)
         {
-            _id = id;
+            _id = (int)id;
         }
 
 
@@ -14,6 +14,8 @@ namespace SharpLexer
         {
             if (tz.Current != '/' || tz.Peek(1) != '/')
                 return null;
+
+            var pos = tz.Pos;
 
             tz.Consume(2);
 
@@ -27,7 +29,7 @@ namespace SharpLexer
 
 
 
-            return new Token(this, tz.Source.Substring(beginIndex, tz.Index - beginIndex));
+            return new Token(pos, this, tz.Source.Substring(beginIndex, tz.Index - beginIndex));
         }
     }
 }
