@@ -5,6 +5,7 @@ namespace SharpLexer
     {
         public int Line;
         public int Col;
+        public string SourceName;
 
         public static TokenPos Init = new TokenPos() { Line = 1, Col = 1 };
         public static TokenPos Invalid = new TokenPos(){ Line = -1, Col = -1};
@@ -13,7 +14,7 @@ namespace SharpLexer
 
         public override string ToString()
         {
-            return string.Format("{0}:{1}", Line, Col);
+            return string.Format("{0}({1})", SourceName, Line );
         }
     }
 

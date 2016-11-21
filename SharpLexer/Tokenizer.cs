@@ -4,10 +4,13 @@ namespace SharpLexer
     public class Tokenizer
     {
         string _source;
-       
-        public Tokenizer(string src)
+
+        public Tokenizer(string src, string srcName)
         {
             Pos = TokenPos.Init;
+            var p = Pos;
+            p.SourceName = srcName;
+            Pos = p;
             _source = src;
         }
 

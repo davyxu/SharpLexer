@@ -8,6 +8,7 @@ namespace SharpLexer
         IEnumerator<Token> _tokeniter;
         int _index;
         TokenPos _pos = TokenPos.Init;
+        string _srcName;
 
         public void AddMatcher(Matcher matcher)
         {
@@ -22,9 +23,9 @@ namespace SharpLexer
             return base.ToString();
         }
 
-        public IEnumerable<Token> Tokenize(string source)
+        public IEnumerable<Token> Tokenize(string source, string srcName)
         {
-            var tz = new Tokenizer(source);
+            var tz = new Tokenizer(source, srcName);
 
             while( !tz.EOF() )
             {
@@ -55,9 +56,11 @@ namespace SharpLexer
             yield return new Token(TokenPos.Init, null, string.Empty);
         }
 
-        public void Start( string src )
+        public void Start( string src, string srcName )
         {
-            _tokeniter = Tokenize(src).GetEnumerator();
+            _srcName = srcName;
+
+            _tokeniter = Tokenize(src, srcName).GetEnumerator();
 
             _tokeniter.MoveNext();
 
