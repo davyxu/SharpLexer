@@ -53,7 +53,7 @@ namespace SharpLexer
             }
 
             // EOF
-            yield return new Token(TokenPos.Init, null, string.Empty);
+            yield return new Token(tz.Pos, null, null);
         }
 
         public void Start( string src, string srcName )
