@@ -18,6 +18,8 @@ namespace UnitTest
         Identifier,        
         
         Go,
+        Dot,
+        XX,
         Semicolon,        
     }
 
@@ -36,18 +38,20 @@ namespace UnitTest
             l.AddMatcher(new UnixStyleCommentMatcher(TokenType.Comment).Ignore());
 
             l.AddMatcher(new SignMatcher(TokenType.Semicolon, ";"));
-            l.AddMatcher(new SignMatcher(TokenType.Go, "go"));
+            l.AddMatcher(new SignMatcher(TokenType.Dot, "."));
+            l.AddMatcher(new KeywordMatcher(TokenType.Go, "go"));
+            l.AddMatcher(new KeywordMatcher(TokenType.XX, "xx"));
 
             l.AddMatcher(new IdentifierMatcher(TokenType.Identifier));
 
             l.AddMatcher(new UnknownMatcher(TokenType.Unknown));
             l.Start(" \"a\"" + @"
 	            123.3;
-	            go
+	            gonew.xx
 	            _id # comment
 	            ;
 	            'b'
-            ");
+            ", "");
 
             //l.Start(File.ReadAllText("a.txt"));
 

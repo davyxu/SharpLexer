@@ -6,37 +6,39 @@ Golang版参考https://github.com/davyxu/golexer
 
 ```csharp
 
-	var l = new Lexer();
+    var l = new Lexer();
 
-	l.AddMatcher(new NumeralMatcher((int)TokenType.Numeral));
-	l.AddMatcher(new StringMatcher((int)TokenType.String));
+    l.AddMatcher(new NumeralMatcher(TokenType.Numeral));
+    l.AddMatcher(new StringMatcher(TokenType.String));
 
-	l.AddMatcher(new WhitespaceMatcher((int)TokenType.Whitespace).Ignore());
-	l.AddMatcher(new LineEndMatcher((int)TokenType.LineEnd).Ignore());
-	l.AddMatcher(new UnixStyleCommentMatcher((int)TokenType.Comment).Ignore());
+    l.AddMatcher(new WhitespaceMatcher(TokenType.Whitespace).Ignore());
+    l.AddMatcher(new LineEndMatcher(TokenType.LineEnd).Ignore());
+    l.AddMatcher(new UnixStyleCommentMatcher(TokenType.Comment).Ignore());
 
-	l.AddMatcher(new SignMatcher((int)TokenType.Semicolon, ";"));
-	l.AddMatcher(new SignMatcher((int)TokenType.Go, "go"));
+    l.AddMatcher(new SignMatcher(TokenType.Semicolon, ";"));
+    l.AddMatcher(new SignMatcher(TokenType.Dot, "."));
+    l.AddMatcher(new KeywordMatcher(TokenType.Go, "go"));
+    l.AddMatcher(new KeywordMatcher(TokenType.XX, "xx"));
 
-	l.AddMatcher(new IdentifierMatcher((int)TokenType.Identifier));
+    l.AddMatcher(new IdentifierMatcher(TokenType.Identifier));
 
-	l.AddMatcher(new UnknownMatcher((int)TokenType.Unknown));
-	l.Start(" \"a\"" + @"
-		123.3;
-		go
-		_id # comment
-		;
-		'b'
-	");
+    l.AddMatcher(new UnknownMatcher(TokenType.Unknown));
+    l.Start(" \"a\"" + @"
+	    123.3;
+	    gonew.xx
+	    _id # comment
+	    ;
+	    'b'
+    ", "");
 
-	while( true )
-	{
-		var tk = l.Read();
-		if (tk.MatcherID == 0)
-			break;
+    while( true )
+    {
+        var tk = l.Read();
+        if (tk.MatcherID == 0)
+            break;
 
-		Console.WriteLine(tk.ToString());
-	}
+        Console.WriteLine(tk.ToString());
+    }
 
 ```
 

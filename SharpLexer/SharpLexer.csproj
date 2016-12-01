@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="CStyleCommentMatcher.cs" />
     <Compile Include="LineEndMatcher.cs" />
+    <Compile Include="KeywordMatcher.cs" />
     <Compile Include="UnixStyleCommentMatcher.cs" />
     <Compile Include="IdentifierMatcher.cs" />
     <Compile Include="Lexer.cs" />

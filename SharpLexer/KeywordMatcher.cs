@@ -3,35 +3,31 @@
 using System;
 namespace SharpLexer
 {
-    public class SignMatcher : Matcher
+    public class KeywordMatcher : Matcher
     {
-        string _word;        
+        string _word;
 
-        public SignMatcher( object id, string word)            
+        public KeywordMatcher(object id, string word)            
         {
             _id = (int)id;
             _word = word;
 
-            foreach (var c in word)
+            foreach( var c in word )
             {
-                if (!IsSign(c))
+                if (!IsKeyword( c ))
                 {
-                    throw new Exception("not sign");
+                    throw new Exception("not keyword");
                 }
             }
         }
 
-        static bool IsSign( char c )
+        static bool IsKeyword(char c)
         {
-            return !char.IsLetterOrDigit(c) &&
-                c != ' ' &&
-                c != '\r' &&
-                c != '\n';
+            return Char.IsLetter(c) || c == '_';
         }
-
         public override string ToString()
         {
-            return string.Format("id: {0} SignMatcher {1}", _id, _word);
+            return string.Format("id: {0} KeywordMatcher {1}", _id, _word);
         }
 
         public override Token Match(Tokenizer tz)
@@ -43,20 +39,27 @@ namespace SharpLexer
 
             int index = 0;
 
-            foreach( var c in _word )
+            foreach (var c in _word)
             {
-                if (!IsSign(c))
+                if (!IsKeyword(c))
                     return null;
 
                 if (tz.Peek(index) != c)
                     return null;
 
                 index++;
-            }            
+            }
+
+            // 看尾部是否有断句特征
+            var pc = tz.Peek(index);
+
+            if (IsKeyword(pc))
+                return null;
 
             tz.Consume(_word.Length);
 
             return new Token(pos, this, _word);
+
         }
 
     }
