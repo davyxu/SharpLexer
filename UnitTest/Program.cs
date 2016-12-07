@@ -36,6 +36,7 @@ namespace UnitTest
             l.AddMatcher(new WhitespaceMatcher(TokenType.Whitespace).Ignore());
             l.AddMatcher(new LineEndMatcher(TokenType.LineEnd).Ignore());
             l.AddMatcher(new UnixStyleCommentMatcher(TokenType.Comment).Ignore());
+            l.AddMatcher(new BlockCommentMatcher(TokenType.Comment).Ignore());
 
             l.AddMatcher(new SignMatcher(TokenType.Semicolon, ";"));
             l.AddMatcher(new SignMatcher(TokenType.Dot, "."));
@@ -49,6 +50,11 @@ namespace UnitTest
 	            123.3;
 	            gonew.xx
 	            _id # comment
+            /*  这里
+    是
+    多行
+    的注释
+*/
 	            ;
 	            'b'
             ", "");
