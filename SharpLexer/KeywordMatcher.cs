@@ -1,6 +1,5 @@
-﻿
+﻿using System;
 
-using System;
 namespace SharpLexer
 {
     public class KeywordMatcher : Matcher
@@ -12,19 +11,30 @@ namespace SharpLexer
             _id = (int)id;
             _word = word;
 
+            int index = 0;
             foreach( var c in word )
             {
-                if (!IsKeyword( c ))
+                if (!IsKeyword( index, c ))
                 {
                     throw new Exception("not keyword");
                 }
+
+                index++;
             }
         }
 
-        static bool IsKeyword(char c)
+        static bool IsKeyword(int index, char c)
         {
-            return Char.IsLetter(c) || c == '_';
+            bool basic = Char.IsLetter(c) || c == '_';
+
+            if (index == 0)
+            {
+                return basic;
+            }
+
+            return basic || Char.IsDigit(c);
         }
+
         public override string ToString()
         {
             return string.Format("id: {0} KeywordMatcher {1}", _id, _word);
@@ -41,7 +51,7 @@ namespace SharpLexer
 
             foreach (var c in _word)
             {
-                if (!IsKeyword(c))
+                if (!IsKeyword(index, c))
                     return null;
 
                 if (tz.Peek(index) != c)
@@ -53,7 +63,7 @@ namespace SharpLexer
             // 看尾部是否有断句特征
             var pc = tz.Peek(index);
 
-            if (IsKeyword(pc))
+            if (IsKeyword(index, pc))
                 return null;
 
             tz.Consume(_word.Length);
