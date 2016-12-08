@@ -13,7 +13,7 @@ namespace SharpLexer
         {
 
             if (!( Char.IsLetter(tz.Current) || tz.Current == '_' ))
-                return null;
+                return Token.Nil;
 
             var pos = tz.Pos;
 

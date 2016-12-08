@@ -1,5 +1,6 @@
 ﻿
 
+using System.Text;
 namespace SharpLexer
 {
     public class LineEndMatcher : Matcher
@@ -13,6 +14,8 @@ namespace SharpLexer
         {
             TokenPos pos = TokenPos.Invalid;
 
+            var sb = new StringBuilder();
+
             int count = 0;
             while( true )
             {
@@ -24,6 +27,8 @@ namespace SharpLexer
                     {
                         pos = tz.Pos;
                     }
+
+                    sb.Append(tz.Current);
 
                     tz.Consume();
                     
@@ -41,13 +46,14 @@ namespace SharpLexer
                     break;
                 }
 
+                sb.Append(tz.Current);
                 tz.Consume();
             }
 
             if (count == 0)
-                return null;
+                return Token.Nil;
 
-            return new Token( pos, this, string.Empty);
+            return new Token(pos, this, sb.ToString());
         }
     }
 }

@@ -13,6 +13,7 @@ namespace SharpLexer
             _ignore = true;
             return this;
         }
+
         public override string ToString()
         {
             return string.Format("id: {0} {1}", _id, base.ToString());

@@ -9,10 +9,12 @@ namespace SharpLexer
         int _index;
         TokenPos _pos = TokenPos.Init;
         string _srcName;
+        Token _curr;
 
-        public void AddMatcher(Matcher matcher)
+        public Matcher AddMatcher(Matcher matcher)
         {
             _tokenmatcher.Add(matcher);
+            return matcher;
         }
 
         public override string ToString()
@@ -23,7 +25,7 @@ namespace SharpLexer
             return base.ToString();
         }
 
-        public IEnumerable<Token> Tokenize(string source, string srcName)
+        IEnumerable<Token> Tokenize(string source, string srcName)
         {
             var tz = new Tokenizer(source, srcName);
 
@@ -35,7 +37,7 @@ namespace SharpLexer
                     var token = matcher.Match(tz);
                     _pos = tz.Pos;
 
-                    if (token == null)
+                    if (token.Equals(Token.Nil))
                     {
                         continue;
                     }

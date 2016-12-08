@@ -21,6 +21,8 @@ namespace SharpLexer
         {
             TokenPos pos = TokenPos.Invalid;
 
+            int beginIndex = tz.Index;
+
             int count = 0;
             for (; ; count++)
             {
@@ -37,11 +39,13 @@ namespace SharpLexer
             }
 
             if (count == 0)
-                return null;
+                return Token.Nil;
 
+            var content = tz.Source.Substring(beginIndex, count);
+            
             tz.Consume( count );
 
-            return new Token(pos, this, string.Empty);
+            return new Token(pos, this, content);
         }
     }
 }

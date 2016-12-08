@@ -13,7 +13,7 @@ namespace SharpLexer
         {
 
             if (!Char.IsDigit(tz.Current) && tz.Current != '-' )
-                return null;
+                return Token.Nil;
 
             var pos = tz.Pos;
 
@@ -43,7 +43,7 @@ namespace SharpLexer
         {
 
             if (!Char.IsDigit(tz.Current)  )
-                return null;
+                return Token.Nil;
 
             var pos = tz.Pos;
 

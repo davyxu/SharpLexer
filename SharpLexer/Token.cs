@@ -18,11 +18,13 @@ namespace SharpLexer
         }
     }
 
-    public class Token
+    public struct Token
     {
         string _value;
         Matcher _matcher;        
         TokenPos _pos;
+
+        public static Token Nil = new Token(TokenPos.Invalid, null, string.Empty);
 
         public Token(TokenPos pos, Matcher matcher, string value)
         {

@@ -13,7 +13,7 @@ namespace SharpLexer
         public override Token Match(Tokenizer tz)
         {
             if (tz.Current != '"' && tz.Current != '\'')
-                return null;
+                return Token.Nil;
 
             var pos = tz.Pos;
 

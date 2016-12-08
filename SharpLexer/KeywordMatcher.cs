@@ -43,7 +43,7 @@ namespace SharpLexer
         public override Token Match(Tokenizer tz)
         {
             if (tz.CharLeft < _word.Length)
-                return null;
+                return Token.Nil;
 
             var pos = tz.Pos;
 
@@ -52,10 +52,10 @@ namespace SharpLexer
             foreach (var c in _word)
             {
                 if (!IsKeyword(index, c))
-                    return null;
+                    return Token.Nil;
 
                 if (tz.Peek(index) != c)
-                    return null;
+                    return Token.Nil;
 
                 index++;
             }
@@ -64,7 +64,7 @@ namespace SharpLexer
             var pc = tz.Peek(index);
 
             if (IsKeyword(index, pc))
-                return null;
+                return Token.Nil;
 
             tz.Consume(_word.Length);
 
