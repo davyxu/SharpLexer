@@ -4,14 +4,20 @@ namespace SharpLexer
     public class Tokenizer
     {
         string _source;
-
-        public Tokenizer(string src, string srcName)
+        Lexer _lexer;
+        public Tokenizer(Lexer lexer, string src, string srcName)
         {
+            _lexer = lexer;
             Pos = TokenPos.Init;
             var p = Pos;
             p.SourceName = srcName;
             Pos = p;
             _source = src;
+        }
+
+        internal Lexer Lexer
+        {
+            get { return _lexer; }
         }
 
         public override string ToString()

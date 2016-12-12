@@ -1,15 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SharpLexer
 {
+    delegate bool MatcherVisitor(Matcher m );
+
     public class Lexer
     {
-        IList<Matcher> _tokenmatcher = new List<Matcher>();
+        List<Matcher> _tokenmatcher = new List<Matcher>();
         IEnumerator<Token> _tokeniter;
         int _index;
         TokenPos _pos = TokenPos.Init;
         string _srcName;
         Token _curr;
+
+        internal void GetMatcherByType( Type t, MatcherVisitor callback )
+        {
+            foreach( var m in _tokenmatcher ){
+                if ( m.GetType() != t )
+                    continue;
+
+                if (!callback(m))
+                    return;
+            }            
+        }
 
         public Matcher AddMatcher(Matcher matcher)
         {
@@ -27,7 +41,7 @@ namespace SharpLexer
 
         IEnumerable<Token> Tokenize(string source, string srcName)
         {
-            var tz = new Tokenizer(source, srcName);
+            var tz = new Tokenizer(this, source, srcName);
 
             while( !tz.EOF() )
             {

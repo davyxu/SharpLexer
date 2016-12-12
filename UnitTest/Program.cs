@@ -19,7 +19,8 @@ namespace UnitTest
         
         Go,
         Dot,
-        XX,
+        Every,
+        Week,
         Semicolon,        
     }
 
@@ -41,14 +42,15 @@ namespace UnitTest
             l.AddMatcher(new SignMatcher(TokenType.Semicolon, ";"));
             l.AddMatcher(new SignMatcher(TokenType.Dot, "."));
             l.AddMatcher(new KeywordMatcher(TokenType.Go, "go"));
-            l.AddMatcher(new KeywordMatcher(TokenType.XX, "xx"));
+            l.AddMatcher(new KeywordMatcher(TokenType.Every, "每"));
+            l.AddMatcher(new KeywordMatcher(TokenType.Week, "周"));
 
             l.AddMatcher(new IdentifierMatcher(TokenType.Identifier));
 
             l.AddMatcher(new UnknownMatcher(TokenType.Unknown));
             l.Start(" \"a\"" + @"
 	            123.3;
-	            gonew.xx
+	            gonew.每周
 	            _id # comment
             /*  这里
     是
@@ -59,7 +61,7 @@ namespace UnitTest
 	            'b'
             ", "");
 
-            //l.Start(File.ReadAllText("a.txt"));
+            //l.Start(File.ReadAllText("a.txt"), string.Empty);
 
             while( true )
             {
