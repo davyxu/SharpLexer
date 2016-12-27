@@ -15,6 +15,8 @@ namespace SharpLexer
             if (tz.Current != '"' && tz.Current != '\'')
                 return Token.Nil;
 
+            var beginChar = tz.Current;
+
             var pos = tz.Pos;
 
             tz.Consume(1);
@@ -24,7 +26,7 @@ namespace SharpLexer
 
             bool escaping = false;
 
-            do
+            while(true)
             {
                 // 将转义符xian
                 if ( escaping )
@@ -39,6 +41,12 @@ namespace SharpLexer
                         case 'r':
                             {
                                 _builder.Append("\r");
+                            }
+                            break;
+                        case '"':
+                        case '\'':
+                            {                                
+                                _builder.Append(tz.Current);
                             }
                             break;
                         default:
@@ -63,12 +71,16 @@ namespace SharpLexer
                     }
                 }
 
-  
-
-
                 tz.Consume();
 
-            } while (tz.Current != '\n' && tz.Current != '\0' && tz.Current != '\'' && tz.Current != '"');
+                // 非转义阶段, 碰到字符串结尾
+                if (!escaping && tz.Current == beginChar)
+                    break;
+                
+                // 行结尾和流结尾
+                if ( tz.Current == '\n' || tz.Current == '\0' )
+                    break;
+            }
 
 
             tz.Consume();

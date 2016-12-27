@@ -48,7 +48,7 @@ namespace UnitTest
             l.AddMatcher(new IdentifierMatcher(TokenType.Identifier));
 
             l.AddMatcher(new UnknownMatcher(TokenType.Unknown));
-            l.Start(" \"a\"" + @"
+            l.Start(" \'a\'" + @"
 	            123.3;
 	            gonew.每周
 	            _id # comment
