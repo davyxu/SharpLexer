@@ -59,7 +59,7 @@ namespace SharpLexer
 
                     escaping = false;
                 }
-                else
+                else if (tz.Current != beginChar )
                 {
                     if ( tz.Current == '\\')
                     {
@@ -70,13 +70,14 @@ namespace SharpLexer
                         _builder.Append(tz.Current);
                     }
                 }
+                else
+                {// 非转义阶段, 碰到字符串结尾
+                    break;
+                }
 
                 tz.Consume();
 
-                // 非转义阶段, 碰到字符串结尾
-                if (!escaping && tz.Current == beginChar)
-                    break;
-                
+
                 // 行结尾和流结尾
                 if ( tz.Current == '\n' || tz.Current == '\0' )
                     break;

@@ -51,7 +51,7 @@ namespace UnitTest
             l.Start(" \'a\'" + @"
 	            123.3;
 	            gonew.每周
-	            _id # comment
+	            _id # comment                
             /*  这里
     是
     多行
@@ -60,6 +60,7 @@ namespace UnitTest
 	            ;
 	            'b'
             ", "");
+            
 
             //l.Start(File.ReadAllText("a.txt"), string.Empty);
 
