@@ -8,7 +8,7 @@ namespace SharpLexer
     public class Lexer
     {
         List<Matcher> _tokenmatcher = new List<Matcher>();
-        IEnumerator<Token> _tokeniter;
+        Tokenizer _tz;
         int _index;
         TokenPos _pos = TokenPos.Init;
         string _srcName;
@@ -33,23 +33,21 @@ namespace SharpLexer
 
         public override string ToString()
         {
-            if (_tokeniter != null)
+            if (_tz != null)
                 return string.Format("{0} @line {1}",Peek().ToString(), _pos.Line);
 
             return base.ToString();
         }
 
-        IEnumerable<Token> Tokenize(string source, string srcName)
+        Token ReadToken( )
         {
-            var tz = new Tokenizer(this, source, srcName);
-
-            while( !tz.EOF() )
+            while( !_tz.EOF() )
             {
 
                 foreach (var matcher in _tokenmatcher)
                 {
-                    var token = matcher.Match(tz);
-                    _pos = tz.Pos;
+                    var token = matcher.Match(_tz);
+                    _pos = _tz.Pos;
 
                     if (token.Equals(Token.Nil))
                     {
@@ -61,40 +59,36 @@ namespace SharpLexer
                         break;
 
 
-                    yield return token;
-
-                    break;
+                    return token;                    
                 }
 
             }
 
             // EOF
-            yield return new Token(tz.Pos, null, null);
+            return new Token(_tz.Pos, null, null);
         }
+
+        
 
         public void Start( string src, string srcName )
         {
             _srcName = srcName;
 
-            _tokeniter = Tokenize(src, srcName).GetEnumerator();
-
-            _tokeniter.MoveNext();
+            _tz = new Tokenizer(this, src, srcName);           
 
         }
 
         public Token Read( )
         {
-            var tk = _tokeniter.Current;
-
-            _tokeniter.MoveNext();
+            _curr = ReadToken();            
             _index++;
 
-            return tk;
+            return _curr;
         }
 
         public Token Peek( )
         {
-            return _tokeniter.Current;
+            return _curr;
         }
     }
 }
