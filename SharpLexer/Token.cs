@@ -10,7 +10,14 @@ namespace SharpLexer
         public static TokenPos Init = new TokenPos() { Line = 1, Col = 1 };
         public static TokenPos Invalid = new TokenPos(){ Line = -1, Col = -1};
 
+        public override bool Equals(object obj)
+        {
+            var other = (TokenPos)obj;
 
+            return other.Line == this.Line &&
+                other.Col == this.Col &&
+                other.SourceName == this.SourceName;
+        }
 
         public override string ToString()
         {
@@ -33,6 +40,16 @@ namespace SharpLexer
             _pos = pos;
         }
 
+        public override bool Equals(object obj)
+        {
+            var other = (Token)obj;
+
+
+            return other._value == this.Value && 
+                other._matcher == this._matcher &&                
+                other._pos.Equals(this._pos);
+        }
+
         public int MatcherID
         { 
             get {
@@ -43,6 +60,19 @@ namespace SharpLexer
                 return _matcher.ID;  
             
             } 
+        }
+
+        public string MatcherName
+        {
+            get
+            {
+
+                if (_matcher == null)
+                    return string.Empty;
+
+                return _matcher.GetType().Name;
+
+            }
         }
 
         public string Value
