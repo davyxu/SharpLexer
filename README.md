@@ -48,6 +48,6 @@ Golang版参考https://github.com/davyxu/golexer
 
 博客: http://www.cppblog.com/sunicdavy
 
-知乎: http://www.zhihu.com/people/xu-bo-62-87
+知乎: http://www.zhihu.com/people/sunicdavy
 
 邮箱: sunicdavy@qq.com
