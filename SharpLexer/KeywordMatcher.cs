@@ -40,8 +40,10 @@ namespace SharpLexer
             return string.Format("id: {0} KeywordMatcher {1}", _id, _word);
         }
 
-        // 处理情况1:  newAnimal  定义new, 把new匹配后返回new, 未完全匹配完
-        // 处理情况2:  每周  定义每, 周, 应该把 每 周单独返回
+        
+        // 现在处理的结果情况:  每周  定义每, 周, 应该把 每 周单独返回
+
+        // 特殊情况:  newAnimal  parse层, 根据两边界定符号, 将同类型的连接在一起做特殊处理
 
         public override Token Match(Tokenizer tz)
         {
@@ -63,28 +65,6 @@ namespace SharpLexer
                 index++;
             }
 
-            // 看尾部是否有断句特征
-            var pc = tz.Peek(index);
-
-            // 其他的同类型的matcher需要解析, 返回当前解析对象
-            bool needParse = false;
-
-            tz.Lexer.GetMatcherByType(typeof(KeywordMatcher), delegate(Matcher m)
-            {
-                var km = m as KeywordMatcher;
-                if (km._word.IndexOf(pc) == 0)
-                {
-                    needParse = true;
-                    return false;
-                }
-
-
-                return true;
-            });
-
-            // 关键字还在继续, 且后方没有人需要, 所以需要读完整句
-            if (IsKeyword(index, pc) && !needParse)
-                return Token.Nil;
 
             tz.Consume(_word.Length);
 

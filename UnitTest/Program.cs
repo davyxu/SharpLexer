@@ -50,22 +50,22 @@ namespace UnitTest
             l.AddMatcher(new IdentifierMatcher(TokenType.Identifier));
 
             l.AddMatcher(new UnknownMatcher(TokenType.Unknown));
-            l.Start(" \'a\'" + @"
-	            123.3;
-                Base64Text
-	            gonew.每周
-	            _id # comment                
-            /*  这里
-    是
-    多行
-    的注释
-*/
-	            ;
-	            'b'
-            ", "");
+//            l.Start(" \'a\'" + @"
+//	            123.3;
+//                Base64Text
+//	            gonew.每周
+//	            _id # comment                
+//            /*  这里
+//    是
+//    多行
+//    的注释
+//*/
+//	            ;
+//	            'b'
+//            ", "");
             
 
-            //l.Start(File.ReadAllText("a.txt"), string.Empty);
+            l.Start(File.ReadAllText("a.txt"), string.Empty);
 
             var rightAnswer = @"===
 MatcherName: 'StringMatcher' Value: 'a'
